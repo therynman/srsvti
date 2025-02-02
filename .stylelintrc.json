@@ -1,7 +1,7 @@
 {
-    "extends": "stylelint-config-standard",
-    "ignoreFiles": ["**/*.tsx", "**/*.jsx", "**/*.html"],
+    "extends": ["stylelint-config-standard", "stylelint-config-tailwindcss"],
+    "ignoreFiles": ["**/*.tsx", "**/*.jsx", "**/*.html", "**/*.svg"],
     "rules": {
-    "no-empty-source": null
+        "no-empty-source": null
     }
 }

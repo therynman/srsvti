@@ -1,6 +1,5 @@
 // app/layout.tsx
-import Image from 'next/image';
-import logo from '@/public/logo.svg';
+import Image from 'next/image'; // Remove the "@" symbol
 
 export default function RootLayout({
   children,
@@ -12,7 +11,7 @@ export default function RootLayout({
       <body>
         <nav className="p-6 fixed w-full bg-white/80 backdrop-blur-md z-50">
           <Image
-            src={logo}
+            src="/logo.svg"
             alt="SRVSVTI Logo"
             width={120}
             height={40}
