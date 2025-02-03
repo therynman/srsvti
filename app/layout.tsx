@@ -1,5 +1,5 @@
-// app/layout.tsx
-import Image from 'next/image'; // Remove the "@" symbol
+import Image from 'next/image';
+
 
 export default function RootLayout({
   children,

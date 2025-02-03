@@ -1,12 +1,16 @@
 // components/InteractiveCard.tsx
 "use client";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { useAtom } from "jotai";
+import { cursorVariant } from "@/lib/store";
+import Image from "next/image";
 
 export default function InteractiveCard() {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const rotateX = useMotionTemplate`${y}deg`;
     const rotateY = useMotionTemplate`${x}deg`;
+    const [, setVariant] = useAtom(cursorVariant);
 
     return (
         <motion.div
@@ -19,11 +23,30 @@ export default function InteractiveCard() {
                 x.set(0);
                 y.set(0);
             }}
+            onHoverStart={() => setVariant("hover")}
+            onHoverEnd={() => setVariant("default")}
             style={{ rotateX, rotateY }}
             className="bg-[#0a0a0a] p-8 rounded-2xl border border-[#606C38]/30 hover:border-[#606C38]/60 transition-all"
         >
-            <h3 className="text-2xl text-[#F5F0E6]">The Art of Engagement</h3>
-            <p className="text-[#F5F0E6]/80 mt-4">
+            {/* Image container */}
+            <div className="relative h-64 overflow-hidden rounded-xl">
+                <motion.div
+                    style={{ x, y }}
+                    className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20"
+                />
+                <Image
+                    src="/project-placeholder.jpg"
+                    alt="Project"
+                    fill
+                    className="object-cover"
+                />
+            </div>
+
+            {/* Card content */}
+            <h3 className="text-2xl text-[#F5F0E6] mt-4">
+                The Art of Engagement
+            </h3>
+            <p className="text-[#F5F0E6]/80 mt-2">
                 Crafting interfaces that don’t just work—
                 <br />
                 they enchant.

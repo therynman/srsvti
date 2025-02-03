@@ -4,13 +4,16 @@ import { motion } from "framer-motion";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import InteractiveCard from '../components/InteractiveCard';
+import { useGSAP } from "@gsap/react";
+import InteractiveCard from "../components/InteractiveCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
     const headlineRef = useRef<HTMLHeadingElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
+    // New ref for the horizontal scroll section
+    const horizontalSectionRef = useRef<HTMLDivElement>(null);
 
     // Hero animations
     useEffect(() => {
@@ -32,6 +35,24 @@ export default function Home() {
             ease: "power1.inOut",
         });
     }, []);
+
+    // Horizontal scroll animation using useGSAP
+    useGSAP(
+        () => {
+            const sections = gsap.utils.toArray(".horizontal-panel");
+            gsap.to(sections, {
+                xPercent: -100 * (sections.length - 1),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: horizontalSectionRef.current,
+                    pin: true,
+                    scrub: 1,
+                    end: "+=3000",
+                },
+            });
+        },
+        { scope: horizontalSectionRef }
+    );
 
     return (
         <main className="min-h-screen bg-[#0a0a0a] overflow-hidden">
@@ -71,8 +92,9 @@ export default function Home() {
                     </motion.button>
                 </motion.div>
             </section>
+
+            {/* Second Section: Horizontal scroll "album" feel */}
             <section className="h-screen relative flex items-center justify-center">
-                {/* Horizontal scroll section for "album" feel */}
                 <div className="flex overflow-x-hidden h-[80vh]">
                     {/* Case Study 1 */}
                     <div className="w-screen flex-shrink-0 flex items-center justify-center">
@@ -92,14 +114,14 @@ export default function Home() {
                             </p>
                         </motion.div>
                     </div>
-
                     {/* Case Study 2 */}
                     <div className="w-screen flex-shrink-0 flex items-center justify-center">
-                        {/* Similar structure */}
+                        {/* Similar structure for another case study */}
                     </div>
                 </div>
             </section>
-            ;{/* Storytelling Section 1 */}
+
+            {/* Storytelling Section 1 */}
             <motion.section
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -120,21 +142,23 @@ export default function Home() {
                     </p>
                 </div>
             </motion.section>
-            {/* Storytelling Section 2 (Horizontal Scroll) */}
-            <section className="h-screen relative flex items-center justify-center">
-                <div className="flex overflow-x-hidden h-[80vh]">
-                    {/* Case Study Cards */}
-                    <div className="w-screen flex-shrink-0 flex items-center justify-center">
+
+            {/* Storytelling Section 2 (Horizontal Scroll using useGSAP) */}
+            <section
+                ref={horizontalSectionRef}
+                className="h-screen relative flex items-center justify-center"
+            >
+                <div className="flex h-[80vh] w-max">
+                    {/* Mark each panel with the class "horizontal-panel" */}
+                    <div className="horizontal-panel w-screen flex-shrink-0 flex items-center justify-center">
                         <InteractiveCard />
                     </div>
-                    <div className="w-screen flex-shrink-0 flex items-center justify-center">
+                    <div className="horizontal-panel w-screen flex-shrink-0 flex items-center justify-center">
                         <InteractiveCard />
                     </div>
+                    {/* Add more panels if needed */}
                 </div>
             </section>
         </main>
     );
 }
-
-// app/page.tsx (continued)
-// Add after the hero section

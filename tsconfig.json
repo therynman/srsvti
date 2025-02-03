@@ -4,7 +4,7 @@
         "paths": {
             "@/*": ["./*"]
         },
-        "jsx": "preserve", // Required for Next.js/React
+        "jsx": "preserve",
         "target": "es5",
         "lib": ["dom", "dom.iterable", "esnext"],
         "module": "esnext",
