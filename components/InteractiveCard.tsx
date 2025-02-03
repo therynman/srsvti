@@ -35,7 +35,7 @@ export default function InteractiveCard() {
                     className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20"
                 />
                 <Image
-                    src="/project-placeholder.jpg"
+                    src="/images/project-placeholder.jpg"
                     alt="Project"
                     fill
                     className="object-cover"

@@ -3,8 +3,11 @@
 @tailwind utilities;
 
 :root {
-    --background: #ffffff;
-    --foreground: #171717;
+    --primary: #4a5759; /* Sophisticated slate */
+    --secondary: #b0c4b1; /* Muted sage */
+    --accent: #aedcc0; /* Water-like teal */
+    --background: #faf9f6; /* Warm white */
+    --foreground: #1a1a1a; /* Deep black */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,4 +38,3 @@ html {
     background: #606c38;
     border-radius: 4px;
 }
-

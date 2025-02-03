@@ -18,6 +18,7 @@ export default function SmoothScroll({
 
         const ctx = gsap.context(() => {
             gsap.to(containerRef.current, {
+
                 y: () =>
                     -(containerRef.current!.scrollHeight - window.innerHeight),
                 ease: "none",
