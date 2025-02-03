@@ -1,12 +1,12 @@
 {
-    "extends": ["stylelint-config-standard", "stylelint-config-tailwindcss"],
+    "extends": ["stylelint-config-standard", "stylelint-config-tailwindcss", "next/core-web-vitals"],
     "rules": {
         "at-rule-no-unknown": [
             true,
             {
                 "ignoreAtRules": ["tailwind"]
             }
-        ],
-        "no-empty-source": null 
-    }
+        ]
+    },
+    "ignoreFiles": ["**/*.js", "**/*.ts", "**/*.tsx", "next-env.d.ts"]
 }
