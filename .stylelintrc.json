@@ -2,7 +2,6 @@
     "extends": ["stylelint-config-standard", "stylelint-config-tailwindcss"],
     "rules": {
         "at-rule-no-unknown": null,
-        "declaration-block-trailing-semicolon": "always",
         "no-descending-specificity": null,
         "selector-class-pattern": null
     },

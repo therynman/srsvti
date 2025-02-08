@@ -1,11 +1,20 @@
-export const CASE_STUDIES = [
+export interface CaseStudy {
+    title: string;
+    description: string;
+    image: string;
+}
+
+export const CASE_STUDIES: CaseStudy[] = [
     {
-        title: "Fintech Dashboard",
+        title: "Fintech Dashboard Reimagined",
         description: "Transforming data into actionable insights",
         image: "/images/fintech.jpg",
-        tags: ["Web App", "Data Visualization"],
     },
-    // Add 3-5 more case studies
+    {
+        title: "E-commerce Platform",
+        description: "Next-gen shopping experience",
+        image: "/images/ecommerce.jpg",
+    },
 ];
 
 export const SERVICES = [

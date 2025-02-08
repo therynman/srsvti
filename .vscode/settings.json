@@ -1,4 +1,9 @@
 {
+    "json.schemas": [],
+    "css.customData": [".vscode/tailwind.json"]
+}
+
+{
     "stylelint.syntax": "css",
     "stylelint.validate": ["css", "postcss"],
     "css.validate": false,

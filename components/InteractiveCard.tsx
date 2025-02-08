@@ -4,8 +4,13 @@ import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import { useAtom } from "jotai";
 import { cursorVariant } from "@/lib/store";
 import Image from "next/image";
+import React from "react";
 
-export default function InteractiveCard() {
+interface InteractiveCardProps {
+    children: React.ReactNode;
+}
+
+export default function InteractiveCard({ children }: InteractiveCardProps) {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const rotateX = useMotionTemplate`${y}deg`;
