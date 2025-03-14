@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { dmSans } from "@/lib/fonts";
 import "./globals.css";
 import "@/lib/animations.css"; // Use the correct path to animations.css
+import { Analytics } from "@vercel/analytics/react";
 
 // Import client components
 import ClientLayout from "@/components/common/ClientLayout";
@@ -39,6 +40,7 @@ export default function RootLayout({
         <html lang="en" className={`${dmSans.variable}`}>
             <body className="antialiased font-sans">
                 <ClientLayout>{children}</ClientLayout>
+                <Analytics />
             </body>
         </html>
     );
