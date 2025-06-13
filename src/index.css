@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #FF5C38;
+    --color-footer-bg: #16232A;
+    --font-primary_font: "Rethink Sans", "sans-serif";
+    --font-secondary_font: "Newsreader", "serif";
+}
+
+/* Add these definitions */
+@layer utilities {
+    @keyframes scroll-left {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    @keyframes scroll-right {
+        from {
+            transform: translateX(-50%);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
+    @keyframes float {
+        0% {
+            transform: translateY(0px) rotate(-3deg);
+        }
+        50% {
+            transform: translateY(-20px) rotate(3deg);
+        }
+        100% {
+            transform: translateY(0px) rotate(-3deg);
+        }
+    }
+
+    .animate-float {
+        /* This applies the keyframes, making it last 6s, run smoothly, and loop forever */
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-scroll-left {
+        animation: scroll-left 20s linear infinite;
+    }
+
+    .animate-scroll-right {
+        animation: scroll-right 20s linear infinite;
+    }
+
+    .pause-animation-on-hover:hover {
+        animation-play-state: paused;
+    }
+}
