@@ -29,7 +29,7 @@ const Testimonials = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {testimonialData.map((testimonial, index) => (
             <div key={index} className="bg-white p-8 rounded-2xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-              <p className="text-gray-600 text-lg leading-relaxed mb-8">"{testimonial.quote}"</p>
+              <p className="text-gray-600 text-lg leading-relaxed mb-8 tracking-tight">"{testimonial.quote}"</p>
               <div className="flex items-center mt-auto">
                 <img src={testimonial.avatar} alt={testimonial.name} className="w-14 h-14 rounded-full mr-4" />
                 <div>
