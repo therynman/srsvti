@@ -8,42 +8,44 @@ import Footer from './components/Footer';
 import Contact from './components/Contact';
 import FloatingConnectButton from './components/FloatingConnectButton';
 import Preloader from './components/Preloader';
+import useMailchimpForm from './hooks/useMailchimpForm';
 
 // ... (Your Hero component remains the same) ...
 const Hero = () => {
-  const [email, setEmail] = useState('');
-  // State to manage the form's status (submitting, success, error)
-  const [formStatus, setFormStatus] = useState({ submitting: false, message: '' });
+  const { email, setEmail, formStatus, handleSubmit } = useMailchimpForm();
+  // const [email, setEmail] = useState('');
+  // // State to manage the form's status (submitting, success, error)
+  // const [formStatus, setFormStatus] = useState({ submitting: false, message: '' });
 
-  // Function to handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
-    setFormStatus({ submitting: true, message: '' });
+  // // Function to handle form submission
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault(); // Prevent default form submission
+  //   setFormStatus({ submitting: true, message: '' });
 
-    try {
-      // Send the email to our secure serverless function
-      const response = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
+  //   try {
+  //     // Send the email to our secure serverless function
+  //     const response = await fetch('/api/subscribe', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ email }),
+  //     });
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (!response.ok) {
-        // If Mailchimp returned an error, use it
-        throw new Error(data.error || 'Something went wrong.');
-      }
+  //     if (!response.ok) {
+  //       // If Mailchimp returned an error, use it
+  //       throw new Error(data.error || 'Something went wrong.');
+  //     }
 
-      // On success
-      setFormStatus({ submitting: false, message: 'Success! Please check your email to confirm.' });
-      setEmail(''); // Clear the input field
+  //     // On success
+  //     setFormStatus({ submitting: false, message: 'Success! Please check your email to confirm.' });
+  //     setEmail(''); // Clear the input field
 
-    } catch (error) {
-      // On failure
-      setFormStatus({ submitting: false, message: error.message });
-    }
-  };
+  //   } catch (error) {
+  //     // On failure
+  //     setFormStatus({ submitting: false, message: error.message });
+  //   }
+  // };
 
   return(
     <section id="home" className="min-h-screen flex flex-col justify-center items-center text-center px-4 pt-20">
@@ -61,14 +63,14 @@ const Hero = () => {
         <input
           type="email"
           value={email} // Controlled component
-          onChange={(e) => setEmail(e.target.value)} // Update state on change
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="You're one email away"
           required
           className="w-full h-[53px] rounded-xl border border-gray-200 bg-white pl-4 md:pr-[260px] font-primary_font font-bold text-lg text-gray-800 placeholder-gray-400 shadow-md md:shadow-none transition-all focus:outline-none focus:ring-2 focus:ring-red-400"
         />
         <button
           type="submit"
-          disabled={formStatus.submitting} // Disable button while submitting
+          disabled={formStatus.submitting}
           className="w-full md:w-auto md:absolute md:right-2 md:top-1/2 md:-translate-y-1/2 rounded-lg bg-primary px-6 py-2.5 text-base font-semibold text-white transition-all duration-300 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {formStatus.submitting ? 'Submitting...' : 'Revolutionize your Brand'}
