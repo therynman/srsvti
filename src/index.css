@@ -9,6 +9,11 @@
 
 /* Add these definitions */
 @layer utilities {
+     @keyframes pulse {
+        50% {
+            opacity: 0.8;
+        }
+    }
     @keyframes scroll-left {
         from {
             transform: translateX(0);
@@ -26,7 +31,7 @@
             transform: translateX(0);
         }
     }
-    /* @keyframes float {
+    @keyframes float {
         0% {
             transform: translateY(0px) rotate(-3deg);
         }
@@ -40,18 +45,6 @@
 
     .animate-float {
         animation: float 6s ease-in-out infinite;
-    } */
-      @keyframes wiggle {
-        0%, 100% {
-            transform: rotate(-3deg);
-        }
-        50% {
-            transform: rotate(3deg);
-        }
-    }
-
-    .animate-wiggle {
-        animation: wiggle 1s ease-in-out infinite;
     }
 
     .animate-scroll-left {
