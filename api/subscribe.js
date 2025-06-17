@@ -16,9 +16,9 @@ export default async function handler(req, res) {
 
   // 3. Get our secret variables from the environment.
   
-  const API_KEY = "dad01ee8dcfa127e90b4c03a5f1fe9c4-us4";
-  const API_SERVER = "us4";
-  const AUDIENCE_ID = "30265cb46a";
+  const API_KEY = process.env.MAILCHIMP_API_KEY;
+  const API_SERVER = process.env.MAILCHIMP_API_SERVER;
+  const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
 
   // 4. Construct the Mailchimp API URL.
   const url = `https://${API_SERVER}.api.mailchimp.com/3.0/lists/${AUDIENCE_ID}/members`;
