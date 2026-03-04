@@ -131,8 +131,21 @@ export default function Home() {
         </header>
 
         {/* Hero Section */}
-        <section ref={heroRef} className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 pt-12 text-center">
-          <div className="max-w-4xl mx-auto flex flex-col items-center">
+        <section ref={heroRef} className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 pt-12 text-center overflow-hidden">
+          {/* Hero Background Image & Overlays */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <img
+              src="/hero-bg.jpg"
+              alt="Hero Background"
+              className="w-full h-full object-cover opacity-60"
+            />
+            {/* Dark Overlay for Readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/80 via-[#050505]/40 to-transparent"></div>
+            {/* Smooth Transition to Next Section */}
+            <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-[#050505] to-transparent"></div>
+          </div>
+
+          <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
             <div className="hero-badge mb-6 px-4 py-1.5 rounded-full border border-white/10 glass-panel text-xs font-semibold tracking-widest uppercase text-zinc-300">
               Not through ads. Through structural positioning.
             </div>
