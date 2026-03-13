@@ -1,118 +1,42 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #050505;
-  --color-foreground: #ededed;
-  --color-srsvti-green: #a3e635;
-  --color-srsvti-green-dark: #65a30d;
-
-  --font-sans: var(--font-geist-sans), Arial, sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
-}
-
-:root {
-  --background: #050505;
-  --foreground: #f4f4f5;
-  --srsvti-green: #a3e635;
-  /* Lime-400 */
+  --font-sans: var(--font-rethink-sans);
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+  background-color: #010206;
+  color: #F7F7F8;
+  font-family: var(--font-rethink-sans), sans-serif;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  cursor: none;
+}
+
+.qual-cards-outer::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #D92D20 transparent;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #a3e635;
+  background-color: #D92D20;
   border-radius: 10px;
-  border: 2px solid #050505;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #65a30d;
-}
-
-/* Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #a3e635 #050505;
-}
-
-/* Custom Cursor */
-.custom-cursor {
-  width: 20px;
-  height: 20px;
-  background-color: #a3e635;
-  border-radius: 50%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-difference: exclusion;
-  transform: translate(-50%, -50%);
-}
-
-.custom-cursor-outline {
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgba(163, 230, 53, 0.5);
-  border-radius: 50%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 9998;
-  mix-blend-difference: exclusion;
-  transform: translate(-50%, -50%);
-}
-
-/* Custom utilities */
-@layer utilities {
-  .glass-panel {
-    background-color: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  }
-
-  .glass-panel-heavy {
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-  }
-
-  .text-gradient-green {
-    color: transparent;
-    background-clip: text;
-    -webkit-background-clip: text;
-    background-image: linear-gradient(to right, #f4f4f5, #a3e635);
-  }
-}
-
-/* GSAP helper defaults */
-.reveal-text,
-.reveal-item {
-  opacity: 0;
-  visibility: hidden;
-}
-
-/* Ensure links and buttons show the cursor or have interactive states */
-a,
-button {
-  cursor: none;
+  background-color: #b12519;
 }
