@@ -1,575 +1,212 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import Navbar from "../components/Navbar";
+import VideoSection from "../components/VideoSection";
+import MethodologySection from "../components/MethodologySection";
+import CTASection from "../components/CTASection";
+import ROISection from "../components/ROISection";
+import CriteriaSection from "../components/CriteriaSection";
+import FooterSection from "../components/FooterSection";
+import dynamic from "next/dynamic";
+
+const AnimatedHeading = dynamic(() => import("../components/AnimatedHeading"), { ssr: false });
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-import SplitType from "split-type";
-import Preloader from "@/components/Preloader";
-import WebGLImage from "@/components/WebGLImage";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+ gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function Home() {
-  const navRef = useRef<HTMLElement>(null);
-  const [isNavVisible, setIsNavVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+ const heroRef = useRef<HTMLDivElement>(null);
+ const nextSectionRef = useRef<HTMLDivElement>(null);
+ const section3Ref = useRef<HTMLDivElement>(null);
+ const section4Ref = useRef<HTMLDivElement>(null);
+ const section5Ref = useRef<HTMLDivElement>(null);
+ const section6Ref = useRef<HTMLDivElement>(null);
+ const section7Ref = useRef<HTMLDivElement>(null);
+ const section8Ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Hide nav if scrolling down and past 100px. Show if scrolling up.
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsNavVisible(false);
-      } else {
-        setIsNavVisible(true);
-      }
-      setLastScrollY(currentScrollY);
-    };
+ useEffect(() => {
+ // Small delay to ensure DOM is ready and Lenis is initialized
+ const timer = setTimeout(() => {
+ ScrollTrigger.refresh();
+ }, 100);
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Automatic Nav Color Change Based on Background
-    const themeSections = document.querySelectorAll("[data-nav-theme]");
-    themeSections.forEach((section) => {
-      const theme = section.getAttribute("data-nav-theme");
-      const color = theme === "light" ? "#F7F7F8" : "#010206";
-      
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top 60px", // Trigger when section hits the nav height approx
-        end: "bottom 60px",
-        onEnter: () => gsap.to(navRef.current, { color: color, duration: 0.3, ease: "power2.out" }),
-        onEnterBack: () => gsap.to(navRef.current, { color: color, duration: 0.3, ease: "power2.out" })
-      });
-    });
-
-    // Animate Hero text immediately on load
-    gsap.fromTo(
-      ".animate-hero",
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.2 }
-    );
-
-    // Text scroll animations (Baseline Reveal)
-    const splitInstances: SplitType[] = [];
-    const animatedTexts = document.querySelectorAll(".animate-on-scroll");
-    
-    animatedTexts.forEach((el) => {
-      const text = new SplitType(el as HTMLElement, { types: "words" });
-      splitInstances.push(text);
-      
-      if (text.words) {
-        text.words.forEach((word) => {
-          // Wrap each word to hide it initially via overflow-hidden mask
-          const wrapper = document.createElement("div");
-          wrapper.style.display = "inline-block";
-          wrapper.style.overflow = "hidden";
-          wrapper.style.verticalAlign = "bottom";
-          wrapper.style.paddingTop = "0.1em"; // prevent ascender clipping
-          wrapper.style.paddingBottom = "0.1em";
-          wrapper.style.marginTop = "-0.1em";
-          wrapper.style.marginBottom = "-0.1em";
-          
-          word.parentNode?.insertBefore(wrapper, word);
-          wrapper.appendChild(word);
-        });
-
-        gsap.fromTo(
-          text.words,
-          { y: "110%" },
-          {
-            y: "0%",
-            duration: 1.2,
-            stagger: 0.04,
-            ease: "power4.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 90%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      }
-    });
-
-    // Guarantee Section Pinning & Text Transition
-    const text1 = new SplitType(".guarantee-text-1", { types: "words" });
-    if (text1.words) {
-      text1.words.forEach((word) => {
-        const wrapper = document.createElement("div");
-        wrapper.style.display = "inline-block";
-        wrapper.style.overflow = "hidden";
-        wrapper.style.verticalAlign = "bottom";
-        wrapper.style.paddingTop = "0.1em";
-        wrapper.style.paddingBottom = "0.1em";
-        wrapper.style.marginTop = "-0.1em";
-        wrapper.style.marginBottom = "-0.1em";
-        word.parentNode?.insertBefore(wrapper, word);
-        wrapper.appendChild(word);
-      });
-      // Initial state for text1
-      gsap.set(text1.words, { yPercent: 0 });
-      splitInstances.push(text1);
-    }
-
-    const text2 = new SplitType(".guarantee-text-2", { types: "words" });
-    if (text2.words) {
-      text2.words.forEach((word) => {
-        const wrapper = document.createElement("div");
-        wrapper.style.display = "inline-block";
-        wrapper.style.overflow = "hidden";
-        wrapper.style.verticalAlign = "bottom";
-        wrapper.style.paddingTop = "0.1em";
-        wrapper.style.paddingBottom = "0.1em";
-        wrapper.style.marginTop = "-0.1em";
-        wrapper.style.marginBottom = "-0.1em";
-        word.parentNode?.insertBefore(wrapper, word);
-        wrapper.appendChild(word);
-      });
-      // Hide text2 words initially offscreen completely
-      gsap.set(text2.words, { yPercent: 150, opacity: 0 });
-      splitInstances.push(text2);
-    }
-
-    const guaranteeTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#guarantee-section",
-        start: "center 70%",
-        toggleActions: "play none none reverse",
-      }
-    });
-
-    guaranteeTl.to(text1.words, { yPercent: -150, opacity: 0, stagger: 0.02, duration: 0.8, ease: "power2.inOut" })
-      .to(text2.words, { yPercent: 0, opacity: 1, stagger: 0.02, duration: 0.8, ease: "power2.out" }, "-=0.4");
-
-
-
-
-
-    return () => {
-      splitInstances.forEach(instance => instance.revert());
-      ScrollTrigger.getAll().forEach(t => t.kill());
-    };
+  let mm = gsap.matchMedia();
+  // GSAP SCROLL STACKING COMPLETELY REMOVED FOR PURE NATIVE FLOW
+  return () => {
+  clearTimeout(timer);
+  if (mm) mm.revert();
+  };
   }, []);
 
-  return (
-    <main className="w-full bg-[#010206] overflow-x-hidden">
-      {/* <Preloader /> */}
-      
-      {/* Fixed Navbar with hide-on-scroll */}
-      <nav 
-        ref={navRef} 
-        className={`fixed top-0 left-0 z-50 w-full flex items-start justify-between px-[16px] md:px-[28px] pt-[16px] md:pt-[28px] text-[#F7F7F8] transition-transform duration-300 ease-in-out ${isNavVisible ? 'translate-y-0' : '-translate-y-full'}`}
-      >
-        <div className="flex-shrink-0 mt-[4px]">
-          <svg className="w-[clamp(32px,2.5vw,40px)] h-auto" width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19.2778 18.3269C19.0111 18.2126 7.2006 12.8094 5.48617 12.0026C3.77174 11.1958 -0.423773 7.96415 2.324 3.01137C5.07178 -1.94142 11.1247 0.631896 11.8486 0.954048C12.5725 1.2762 25.7926 7.39267 25.7926 7.39267H21.8304L19.5445 6.36402V8.30704C19.5445 8.30704 9.56269 3.69714 9.10551 3.50664C8.64833 3.31614 6.55292 2.64777 5.71476 4.34482C4.87659 6.04187 6.25405 7.14335 7.1244 7.54507C7.99474 7.94678 27.2403 16.7282 28.3452 17.2602C29.4501 17.7921 33.4123 21.4129 31.5836 26.2895C29.7548 31.1661 26.0593 31.8899 24.8401 31.9661C23.621 32.0423 7.92446 31.9661 6.89581 31.9661C5.86715 31.9661 3.75048 30.8613 2.20971 29.4516C0.668937 28.042 -3.23366e-06 25.3751 0 24.4227V12.7264V12.7094C0 12.1998 0.526524 11.8605 0.990558 12.0711C0.990558 12.0711 18.4015 19.9906 18.5539 20.0413C18.7063 20.0921 19.354 20.0794 19.6207 19.508C19.8874 18.9365 19.5445 18.4412 19.2778 18.3269Z" fill="currentColor"/>
-            <path d="M26.3648 9.14338L32.1177 11.7722H27.3935L21.6406 9.14338H26.3648Z" fill="currentColor"/>
-          </svg>
-        </div>
-        
-        {/* Nav Links */}
-        <div className="flex gap-[24px] md:gap-[clamp(60px,8vw,120px)] items-start pt-[6px] font-extrabold text-[14px] md:text-[clamp(16px,1.67vw,24px)] uppercase tracking-[0.02em] leading-none">
-          <a href="#methodology" className="hidden md:block hover:opacity-80 transition-opacity">
-            Methodology
-          </a>
-          <a href="#diagnosis" className="flex items-start gap-[0.2em] group hover:opacity-80 transition-opacity">
-            <span className="border-b-[2px] border-current pb-[2px]">
-              Start Revenue Diagnosis
-            </span>
-            <svg className="w-[0.7em] h-[0.7em] mt-[0.1em] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" viewBox="0 0 561 561" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M520.853 0C542.945 0 560.853 17.9086 560.853 40V520.5C560.853 542.591 542.945 560.5 520.853 560.5H519.853C497.762 560.5 479.853 542.591 479.853 520.5V138.275L68.9911 549.138C53.3701 564.759 28.0436 564.759 12.4226 549.138L11.7157 548.431C-3.90525 532.81 -3.90524 507.483 11.7157 491.862L422.578 81H40.3533C18.2619 81 0.35334 63.0914 0.35334 41V40C0.35334 17.9086 18.2619 0 40.3533 0H520.853Z" fill="currentColor"/>
-            </svg>
-          </a>
-        </div>
-      </nav>
+ return (
+ <main className="min-h-screen bg-[#121212] flex flex-col text-white font-sans w-full">
+ 
+ {/* Navbar with auto-hide behavior */}
+ <Navbar />
 
-      {/* Hero Section */}
-      <section data-nav-theme="light" className="relative h-[100svh] min-h-[600px] w-full overflow-hidden flex flex-col px-[16px] md:px-[28px] pt-[16px] md:pt-[28px] pb-[40px] md:pb-[80px] text-[#F7F7F8]">
-        {/* Background Video using z-0 to avoid buggy negative stacking context behind main */}
-        <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            <source src="/hero-background.mp4" type="video/mp4" />
-          </video>
-        </div>
+ {/* Spacer for fixed navbar */}
+ <div className="h-[97px] w-full shrink-0" />
 
-        {/* Overlay: #1A1A1A 40% opacity */}
-        <div className="absolute inset-0 bg-[#1A1A1A] opacity-40 z-10" />
+ {/* Main Content Area: Side borders, spaced fluidly from screen edges */}
+ <div className="mx-[clamp(16px,4.16vw,60px)] border-x border-[#848484] flex-grow flex flex-col">
+ 
+ {/* HERO SECTION — will be pinned by GSAP when fully visible */}
+ <div ref={heroRef} className="w-full flex flex-col bg-[#121212] " style={{ zIndex: 1 }}>
+ {/* Text Section */}
+ <div className="px-[clamp(16px,4.16vw,60px)] pt-[clamp(60px,5.55vw,80px)] pb-[clamp(40px,4.16vw,60px)] w-full">
+ <div className="flex flex-col xl:grid xl:grid-cols-12 gap-[clamp(24px,3vw,12px)] items-start xl:items-end">
+ {/* Heading: 8 grids */}
+ <div className="w-full xl:col-span-6">
+ <AnimatedHeading
+ className="font-medium"
+ style={{ 
+ fontSize: 'clamp(32px, 2.77vw, 160px)', 
+ letterSpacing: '-0.04em',
+ lineHeight: '100%'
+ }}
+ >
+ <span className="text-[#0077FF]">Clinical Grade Product</span>. You Are Selling It Like A Commodity
+ </AnimatedHeading>
+ </div>
 
-        {/* Hero Content Grid (Bottom) */}
-        <div className="relative z-20 w-full flex-grow flex flex-col justify-end gap-[40px] lg:grid lg:grid-cols-12 lg:gap-x-[24px]">
-          {/* H1 Headline */}
-          <div className="lg:col-start-1 lg:col-span-6 lg:self-end">
-            <h1 className="animate-hero text-[clamp(28px,4.17vw,60px)] font-semibold leading-[1.02] tracking-tight">
-              Stop Charging Protocol<br />
-              Level Prices With Product<br />
-              Level Positioning
-            </h1>
-          </div>
-          
-          {/* Paragraph */}
-          <div className="lg:col-start-9 lg:col-span-4 lg:row-start-1 lg:self-center">
-            <p className="animate-hero text-[16px] md:text-[20px] font-semibold text-left lg:text-right leading-[1.4]">
-              We build digital infrastructure that converts high value prospects into long term subscriptions. Stop losing $50,000 a month to a leaky conversion funnel and an emotionally dead retention architecture.
-            </p>
-          </div>
-        </div>
-      </section>
+ {/* Subheadline: 4 grids on the right */}
+ <div className="w-full xl:col-span-4 xl:col-start-9 mt-6 xl:mt-0">
+ <p 
+ className="font-medium text-white/80"
+ style={{ 
+ fontSize: 'clamp(14px, 1.11vw, 64px)', 
+ letterSpacing: '0',
+ lineHeight: '100%'
+ }}
+ >
+ You are scaling acquisition on top of an emotionally dead retention architecture. We engineer the digital trust systems required to convert isolated buyers into long term health subscriptions.
+ </p>
+ </div>
+ </div>
+ </div>
 
-      {/* Section 1: Revenue Diagnosis */}
-      <section id="news-section" data-nav-theme="dark" className="w-full bg-[#F7F7F8] px-[16px] md:px-[28px] pt-[80px] md:pt-[80px] lg:pt-[160px] pb-[80px] md:pb-[80px] lg:pb-[160px] text-[#010206]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 relative z-10">
-          <div className="lg:col-start-7 lg:col-span-6 flex flex-col items-start">
-            <h2 className="animate-on-scroll text-[clamp(24px,3.33vw,48px)] font-semibold leading-[1.05] tracking-tight">
-              We build digital infrastructure that converts high value prospects into long term subscriptions. Stop losing <span className="text-[#D92D20]">$50,000</span> a month to a <span className="text-[#D92D20]">leaky</span> conversion funnel and an <span className="text-[#D92D20]">emotionally dead</span> retention architecture.
-            </h2>
-            
-            <a href="#diagnosis" className="mt-[40px] md:mt-[80px] flex items-start gap-[0.2em] font-extrabold text-[clamp(14px,1.67vw,24px)] uppercase tracking-[0.02em] w-fit group hover:opacity-80 transition-opacity leading-none text-[#010206]">
-              <span className="border-b-[2px] border-current pb-[2px]">
-                START YOUR REVENUE DIAGNOSIS
-              </span>
-              <svg className="w-[0.7em] h-[0.7em] mt-[0.1em] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" viewBox="0 0 561 561" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M520.853 0C542.945 0 560.853 17.9086 560.853 40V520.5C560.853 542.591 542.945 560.5 520.853 560.5H519.853C497.762 560.5 479.853 542.591 479.853 520.5V138.275L68.9911 549.138C53.3701 564.759 28.0436 564.759 12.4226 549.138L11.7157 548.431C-3.90525 532.81 -3.90524 507.483 11.7157 491.862L422.578 81H40.3533C18.2619 81 0.35334 63.0914 0.35334 41V40C0.35334 17.9086 18.2619 0 40.3533 0H520.853Z" fill="currentColor"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </section>
+ {/* Hero Graphics Pattern Area */}
+ <div className="w-full border-t border-[#848484] bg-dotted-pattern flex items-center justify-center">
+ <div className="w-full px-[clamp(16px,4.16vw,60px)] py-[clamp(24px,4.16vw,60px)]">
+ <img 
+ src="/Hero Graphics.svg" 
+ alt="Hero Graphics" 
+ className="w-full h-auto object-contain"
+ id="hero-graphic"
+ />
+ </div>
+ </div>
+ </div>
 
-      {/* Section 2: Delusion vs Reality */}
-      <section data-nav-theme="dark" className="w-full bg-[#F7F7F8] px-[16px] md:px-[28px] pb-[80px] md:pb-[80px] lg:pb-[160px] text-[#010206]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 relative z-10">
-          <div className="lg:col-start-1 lg:col-span-6 flex flex-col">
-            <h2 className="animate-on-scroll text-[clamp(24px,3.33vw,48px)] font-semibold leading-[1.05] tracking-tight">
-              On the surface, you look premium. Economically, you behave like a commodity.
-            </h2>
-            
-            <div className="mt-[24px] md:mt-[40px] w-full flex flex-col border-t-[1px] border-[#010206] pt-[24px]">
-              <div className="grid grid-cols-1 md:grid-cols-6 gap-[16px] md:gap-0">
-                <div className="md:col-span-3 md:pr-[24px]">
-                  <h3 className="animate-on-scroll text-[20px] md:text-[24px] font-extrabold uppercase tracking-tight leading-none">THE DELUSION</h3>
-                </div>
-                <div className="md:col-span-3 md:pr-[24px]">
-                  <p className="animate-on-scroll text-[16px] md:text-[20px] font-medium leading-[1.15] tracking-tight">
-                    You rely on clinical packaging and ingredient transparency. You believe educating customers automatically builds trust. You treat subscriptions as a discount mechanism to drive volume.
-                  </p>
-                </div>
-              </div>
-            </div>
+ {/* SECTION 2: Delusion vs Reality — slides over the pinned hero */}
+ <div ref={nextSectionRef} className="w-full flex flex-col bg-[#121212] border-t border-[#848484] " style={{ zIndex: 2, position: 'relative' }}>
+ {/* Header */}
+ <div className="px-[clamp(16px,4.16vw,60px)] pt-[clamp(80px,11.11vw,160px)] pb-[clamp(40px,5.55vw,80px)]">
+ <AnimatedHeading
+ className="font-medium"
+ style={{ 
+ fontSize: 'clamp(32px, 2.77vw, 160px)', 
+ letterSpacing: '-0.04em',
+ lineHeight: '100%'
+ }}
+ >
+ On the <span className="text-[#0077FF]">surface</span>, the brand projects authority. <span className="text-[#0077FF]">Economically</span>, the infrastructure behaves like a beginner
+ </AnimatedHeading>
+ </div>
 
-            <div className="mt-[24px] md:mt-[40px] w-full flex flex-col border-t-[1px] border-[#010206] pt-[24px]">
-              <div className="grid grid-cols-1 md:grid-cols-6 gap-[16px] md:gap-0">
-                <div className="md:col-span-3 md:pr-[24px]">
-                  <h3 className="animate-on-scroll text-[20px] md:text-[24px] font-extrabold uppercase tracking-tight leading-none">THE REALITY</h3>
-                </div>
-                <div className="md:col-span-3 md:pr-[24px]">
-                  <p className="animate-on-scroll text-[16px] md:text-[20px] font-medium leading-[1.15] tracking-tight">
-                    The market only sees another replaceable product. You are scaling acquisition on top of a fundamentally broken retention architecture. CAC is rising while your Lifetime Value remains stagnant.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+ {/* Grid */}
+ <div className="w-full flex flex-col xl:grid xl:grid-cols-2 border-t border-[#848484]">
+ {/* Left Graphic */}
+ <div className="border-b xl:border-b-0 xl:border-r border-[#848484] bg-dotted-pattern flex items-center justify-center p-[clamp(24px,4.16vw,60px)] min-h-[400px] xl:min-h-[800px]">
+ <img src="/Delusion vs Reality Graphics.svg" alt="Delusion vs Reality" className="w-full h-auto xl:w-[80%] max-w-[80vw] xl:max-w-[700px] object-contain" />
+ </div>
 
-      {/* Section 3: Methodology */}
-      <section data-nav-theme="dark" className="w-full bg-[#F7F7F8] px-[16px] md:px-[28px] pb-[80px] md:pb-[80px] lg:pb-[160px] text-[#010206]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-[24px] relative z-10 w-full mb-[40px] md:mb-[80px]">
-          <div className="lg:col-start-1 lg:col-span-6 flex flex-col">
-            <h2 className="animate-on-scroll text-[clamp(24px,3.33vw,48px)] font-semibold leading-[1.05] tracking-tight">
-              Premium Brands <span className="text-[#D92D20]">Do Not Sell Products.</span> They Sell Health Systems. We deploy four structural systems to force growth.
-            </h2>
-          </div>
-        </div>
+ {/* Right Cards */}
+ <div className="flex flex-col h-full">
+ {/* Delusion Card */}
+ <div className="flex-1 border-b border-[#848484] px-[clamp(16px,4.16vw,60px)] py-[clamp(40px,5.55vw,60px)] xl:pt-[60px] xl:pb-[60px] flex flex-col">
+ <div className="flex items-center gap-[16px] mb-6">
+ <div className="bg-white rounded-[4px] w-[26px] h-[26px] flex flex-shrink-0 items-center justify-center">
+ <img src="/Cross.svg" alt="Cross" className="w-[12px] h-auto" />
+ </div>
+ <h3 className="font-semibold text-white" style={{ fontSize: 'clamp(24px, 2.22vw, 128px)', letterSpacing: '-0.02em', lineHeight: '100%' }}>The Delusion</h3>
+ </div>
+ <p 
+ className="font-medium text-white/80"
+ style={{ 
+ fontSize: 'clamp(14px, 1.11vw, 64px)', 
+ letterSpacing: '0',
+ lineHeight: '140%'
+ }}
+ >
+ Relying on minimalist packaging and ingredient transparency creates a false sense of security. Educating the customer does not automatically build emotional trust. Framing a subscription model as a simple pricing discount traps the brand in a volume driven commodity loop.
+ </p>
+ </div>
 
-        {/* 4 Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 relative z-10 w-full border-t-[1px] border-l-[1px] border-r-[1px] border-[#010206] border-b-[1px] bg-[#F7F7F8]">
-          
-          {/* Card 1 */}
-          <div className="flex flex-col p-[20px] pt-[60px] md:pt-[80px] lg:pt-[248px] border-b-[1px] md:border-r-[1px] lg:border-b-0 border-[#010206]">
-            <h3 className="font-extrabold text-[20px] md:text-[24px] uppercase leading-[1.1] tracking-tight mb-[20px]">
-              CATEGORY<br />POSITIONING
-            </h3>
-            <p className="font-medium text-[16px] md:text-[20px] leading-[1.15] tracking-tight">
-              Move from ingredient selling to health protocol ownership.
-            </p>
-          </div>
+ {/* Reality Card */}
+ <div className="flex-1 px-[clamp(16px,4.16vw,60px)] py-[clamp(40px,5.55vw,60px)] xl:pt-[60px] xl:pb-[60px] flex flex-col">
+ <div className="flex items-center gap-[16px] mb-6">
+ <div className="bg-white rounded-[4px] w-[26px] h-[26px] flex flex-shrink-0 items-center justify-center">
+ <img src="/Tick.svg" alt="Tick" className="w-[12px] h-auto" />
+ </div>
+ <h3 className="font-semibold text-white" style={{ fontSize: 'clamp(24px, 2.22vw, 128px)', letterSpacing: '-0.02em', lineHeight: '100%' }}>The Reality</h3>
+ </div>
+ <p 
+ className="font-medium text-white/80"
+ style={{ 
+ fontSize: 'clamp(14px, 1.11vw, 64px)', 
+ letterSpacing: '0',
+ lineHeight: '140%'
+ }}
+ >
+ The market only sees another replaceable supplement. Capital is currently bleeding into Meta ads to capture single purchases. Hoping that product efficacy alone will drive repeat business is not a viable growth model. Customer Acquisition Cost rises daily while Lifetime Value remains trapped on a plateau.
+ </p>
+ </div>
+ </div>
+ </div>
+ 
+ 
+ </div>
 
-          {/* Card 2 */}
-          <div className="flex flex-col p-[20px] pt-[60px] md:pt-[80px] lg:pt-[248px] border-b-[1px] border-[#010206] lg:border-b-0 lg:border-r-[1px]">
-            <h3 className="font-extrabold text-[20px] md:text-[24px] uppercase leading-[1.1] tracking-tight mb-[20px]">
-              TRUST STACK<br />ARCHITECTURE
-            </h3>
-            <p className="font-medium text-[16px] md:text-[20px] leading-[1.15] tracking-tight">
-              Replace scattered information with verifiable transformation evidence.
-            </p>
-          </div>
+ {/* SECTION 3: Video Section */}
+ <div ref={section3Ref} className="relative" style={{ zIndex: 3 }}>
+ <VideoSection />
+ </div>
 
-          {/* Card 3 */}
-          <div className="flex flex-col p-[20px] pt-[60px] md:pt-[80px] lg:pt-[248px] border-b-[1px] md:border-b-0 md:border-r-[1px] lg:border-r-[1px] border-[#010206]">
-            <h3 className="font-extrabold text-[20px] md:text-[24px] uppercase leading-[1.1] tracking-tight mb-[20px]">
-              IDENTITY<br />SUBSCRIPTION DESIGN
-            </h3>
-            <p className="font-medium text-[16px] md:text-[20px] leading-[1.15] tracking-tight">
-              Stop framing subscriptions as discounts. We rebuild them as long term identity commitments to kill churn.
-            </p>
-          </div>
+ {/* SECTION 4: Methodology Accordion */}
+ <div ref={section4Ref} className="relative" style={{ zIndex: 4 }}>
+ <MethodologySection />
+ </div>
 
-          {/* Card 4 */}
-          <div className="flex flex-col p-[20px] pt-[60px] md:pt-[80px] lg:pt-[248px] border-[#010206]">
-            <h3 className="font-extrabold text-[20px] md:text-[24px] uppercase leading-[1.1] tracking-tight mb-[20px]">
-              REVENUE MODEL<br />ENGINEERING
-            </h3>
-            <p className="font-medium text-[16px] md:text-[20px] leading-[1.15] tracking-tight">
-              Deploy protocol bundles to scale your Average Order Value.
-            </p>
-          </div>
+ {/* SECTION 5: CTA */}
+ <div ref={section5Ref} className="relative" style={{ zIndex: 5 }}>
+ <CTASection />
+ </div>
 
-        </div>
-      </section>
+ {/* SECTION 6: ROI Guarantee */}
+ <div ref={section6Ref} className="relative" style={{ zIndex: 6 }}>
+ <ROISection />
+ </div>
 
-      {/* Section 4: Fintech Level Conversion Math */}
-      <section data-nav-theme="dark" className="w-full bg-[#F7F7F8] px-[16px] md:px-[28px] pb-[80px] md:pb-[80px] lg:pb-[160px] text-[#010206]">
-        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-[40px] lg:gap-0 relative z-10 w-full">
-          
-          {/* Left: Image */}
-          <div className="lg:col-start-1 lg:col-span-6 relative aspect-[4/3] lg:min-h-[600px] lg:aspect-[3/4]">
-            <div className="absolute inset-0 w-full h-full lg:w-[calc(100%-20px)]">
-              <WebGLImage 
-                src="/section4-img.jpg" 
-                alt="Fintech Level Conversion Math" 
-                className="w-full h-full" 
-              />
-            </div>
-          </div>
+ {/* SECTION 7: Criteria */}
+ <div ref={section7Ref} className="relative" style={{ zIndex: 7 }}>
+ <CriteriaSection />
+ </div>
 
-          {/* Right: Text Content */}
-          <div className="lg:col-start-7 lg:col-span-6 flex flex-col">
-            <h2 className="animate-on-scroll text-[clamp(28px,3.33vw,48px)] font-semibold leading-[1.05] tracking-tight">
-              We Bring Fintech Level Conversion Math To Premium Wellness
-            </h2>
-            
-            <div className="flex flex-col md:grid md:grid-cols-6 gap-0 mt-[24px] md:mt-[40px]">
-              {/* Left Paragraph Block */}
-              <div className="md:col-start-1 md:col-span-3 md:row-start-1 flex flex-col gap-[20px] md:pr-[24px] mb-[20px] md:mb-0">
-                <p className="animate-on-scroll text-[16px] md:text-[20px] font-medium leading-[1.15] tracking-tight">
-                  The wellness industry is infected with aesthetic designers who cannot do math. We do not come from the wellness space. We come from Fintech and Web3.
-                </p>
-                <p className="animate-on-scroll text-[16px] md:text-[20px] font-medium leading-[1.15] tracking-tight">
-                  In the financial sector, a fraction of a percent drop in conversion equals millions in lost capital. We spent years engineering trust in the most skeptical, high friction environments on the internet.
-                </p>
-              </div>
+ {/* SECTION 8: Footer */}
+ <div ref={section8Ref} className="relative" style={{ zIndex: 8 }}>
+ <FooterSection />
+ </div>
 
-              {/* Right Paragraph Block */}
-              <div className="md:col-start-4 md:col-span-3 md:row-start-2 flex flex-col gap-[20px] md:pr-[24px] md:mt-[80px]">
-                <p className="animate-on-scroll text-[16px] md:text-[20px] font-medium leading-[1.15] tracking-tight">
-                  Now, we are bringing that exact ruthless, data driven architecture to your brand.
-                </p>
-                <p className="animate-on-scroll text-[16px] md:text-[20px] font-medium leading-[1.15] tracking-tight">
-                  While other agencies debate color palettes and font pairings, we deploy behavioral economics. We audit your skepticism peaks, rebuild your subscription psychology, and mathematically justify your premium price tag. We do not guess. We calculate.
-                </p>
-              </div>
-            </div>
-          </div>
+ {/* Bottom Border & Gap */}
+ <div className="w-full border-t border-[#848484]"></div>
+ <div className="h-[60px] w-full bg-[#121212]"></div>
 
-        </div>
-      </section>
-
-
-      {/* Section 5: CTA Block */}
-      <section className="w-full bg-[#F7F7F8] px-[16px] md:px-[28px] flex flex-col items-center">
-        {/* Dark container */}
-        <div data-nav-theme="light" className="w-full bg-[#051C2C] grid grid-cols-1 lg:grid-cols-12 gap-0 relative z-10">
-          {/* Content */}
-          <div className="lg:col-start-1 lg:col-span-6 flex flex-col p-[30px] md:p-[60px] gap-[30px] md:gap-[60px] text-[#F7F7F8]">
-            
-            <h2 className="animate-on-scroll text-[clamp(28px,3.5vw,48px)] font-semibold leading-[1.05] tracking-tight">
-              Stop Guessing.<br />Audit Your Funnel.
-            </h2>
-            
-            <div className="flex flex-col gap-[20px]">
-              <h3 className="animate-on-scroll text-[16px] md:text-[20px] font-extrabold uppercase leading-[1.1] tracking-tight">
-                DO NOT BOOK A CALL. FIRST, YOU MUST COMPLETE OUR REVENUE ARCHITECTURE DIAGNOSTIC.
-              </h3>
-              
-              <p className="animate-on-scroll text-[16px] md:text-[20px] font-medium leading-[1.25] tracking-tight">
-                This interactive tool will force you to answer highly specific questions regarding your Average Order Value, your subscription retention architecture, and your reliance on paid ads. It will automatically calculate your conversion friction and pinpoint exactly where you are bleeding capital.
-              </p>
-            </div>
-            
-            <a href="#diagnostic" className="animate-on-scroll flex items-start gap-[0.2em] font-extrabold text-[16px] md:text-[20px] uppercase tracking-[0.02em] w-fit group hover:opacity-80 transition-opacity leading-none text-[#F7F7F8]">
-              <span className="border-b-[2px] border-current pb-[2px]">
-                START THE FREE DIAGNOSTIC
-              </span>
-              <svg className="w-[0.7em] h-[0.7em] mt-[0.1em] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" viewBox="0 0 561 561" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M520.853 0C542.945 0 560.853 17.9086 560.853 40V520.5C560.853 542.591 542.945 560.5 520.853 560.5H519.853C497.762 560.5 479.853 542.591 479.853 520.5V138.275L68.9911 549.138C53.3701 564.759 28.0436 564.759 12.4226 549.138L11.7157 548.431C-3.90525 532.81 -3.90524 507.483 11.7157 491.862L422.578 81H40.3533C18.2619 81 0.35334 63.0914 0.35334 41V40C0.35334 17.9086 18.2619 0 40.3533 0H520.853Z" fill="currentColor"/>
-              </svg>
-            </a>
-            
-          </div>
-        </div>
-      </section>
-
-      {/* Section 6: Guarantee Transition */}
-      {/* Centered with equal vertical padding */}
-      <section id="guarantee-section" data-nav-theme="dark" className="relative w-full bg-[#F7F7F8] text-[#010206] py-[80px] md:py-[160px]">
-        <div className="w-full flex items-center px-[16px] md:px-[28px]">
-          <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-0 relative z-10">
-            <div className="lg:col-start-7 lg:col-span-6 relative flex flex-col justify-center">
-              <div className="relative w-full">
-                {/* Text 1 */}
-                <h2 className="guarantee-text-1 text-[clamp(24px,3.8vw,52px)] font-semibold leading-[1.05] tracking-tight">
-                  This is a $10,000 injection into your revenue architecture. We project a minimum 30 percent lift in your subscription adoption and a 50 percent increase in checkout conversions.
-                </h2>
-                {/* Text 2 */}
-                <h2 className="guarantee-text-2 absolute top-0 left-0 w-full text-[clamp(24px,3.8vw,52px)] font-semibold leading-[1.05] tracking-tight">
-                  If we <span className="text-[#D92D20]">fail to hit</span> these benchmarks within 120 days of launch, our team continues to audit, test, and iterate on your funnel at zero additional cost to you until the metrics are achieved.
-                </h2>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 7: Strict Qualification Parameters — LAST SECTION */}
-      <section data-nav-theme="dark" className="w-full bg-[#F7F7F8] px-[16px] md:px-[28px] pb-[80px] md:pb-[80px] lg:pb-[160px] text-[#010206]">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-0" style={{ border: '1px solid #010206' }}>
-
-          {/* Left Column — title */}
-          <div className="p-[30px] md:p-[60px]">
-            <h2 className="animate-on-scroll text-[clamp(28px,3.33vw,48px)] font-semibold leading-[1.05] tracking-tight">
-              Strict Qualification<br />Parameters
-            </h2>
-          </div>
-
-          {/* Right Column — static cards */}
-          <div className="flex flex-col" style={{ borderLeft: '1px solid #010206', borderTop: '1px solid #010206' }}>
-
-            <div className="p-[30px] md:p-[60px]" style={{ borderBottom: '1px solid #010206' }}>
-              <h3 className="text-[18px] md:text-[20px] font-extrabold uppercase leading-[1.1] tracking-tight mb-[16px]">THE CRITERIA</h3>
-              <ul className="text-[16px] md:text-[20px] font-medium leading-[1.5] tracking-tight list-disc pl-[20px] space-y-[4px]">
-                <li>Founder led wellness brands only.</li>
-                <li>Minimum $1M to $8M in annual revenue.</li>
-                <li>Currently deploying capital on paid acquisition.</li>
-              </ul>
-            </div>
-
-            <div className="p-[30px] md:p-[60px]" style={{ borderBottom: '1px solid #010206' }}>
-              <h3 className="text-[18px] md:text-[20px] font-extrabold uppercase leading-[1.1] tracking-tight mb-[16px]">THE EXCLUSIONS</h3>
-              <ul className="text-[16px] md:text-[20px] font-medium leading-[1.5] tracking-tight list-disc pl-[20px] space-y-[4px]">
-                <li>No Amazon commodity supplement sellers.</li>
-                <li>No influencer vanity brands.</li>
-                <li>No early stage startups seeking a cheap redesign.</li>
-              </ul>
-            </div>
-
-            <div className="p-[30px] md:p-[60px]" style={{ borderBottom: '1px solid #010206' }}>
-              <h3 className="text-[18px] md:text-[20px] font-extrabold uppercase leading-[1.1] tracking-tight mb-[16px]">THE INVESTMENT</h3>
-              <ul className="text-[16px] md:text-[20px] font-medium leading-[1.5] tracking-tight list-disc pl-[20px] space-y-[4px]">
-                <li>Baseline engagements begin at $10,000.</li>
-              </ul>
-            </div>
-
-            <div className="p-[30px] md:p-[60px]" style={{ borderBottom: '1px solid #010206' }}>
-              <p className="text-[16px] md:text-[20px] font-medium leading-[1.5] tracking-tight">
-                If you meet these parameters and are ready to fix your structural bottlenecks, submit your data for an economic diagnosis.
-              </p>
-            </div>
-
-            <div className="p-[30px] md:p-[60px]">
-              <a href="#diagnosis" className="flex items-start gap-[0.2em] font-extrabold text-[16px] md:text-[20px] uppercase tracking-[0.02em] w-fit group hover:opacity-80 transition-opacity leading-none text-[#010206]">
-                <span className="border-b-[2px] border-current pb-[2px]">
-                  START YOUR REVENUE DIAGNOSIS
-                </span>
-                <svg className="w-[0.7em] h-[0.7em] mt-[0.1em] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" viewBox="0 0 561 561" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M520.853 0C542.945 0 560.853 17.9086 560.853 40V520.5C560.853 542.591 542.945 560.5 520.853 560.5H519.853C497.762 560.5 479.853 542.591 479.853 520.5V138.275L68.9911 549.138C53.3701 564.759 28.0436 564.759 12.4226 549.138L11.7157 548.431C-3.90525 532.81 -3.90524 507.483 11.7157 491.862L422.578 81H40.3533C18.2619 81 0.35334 63.0914 0.35334 41V40C0.35334 17.9086 18.2619 0 40.3533 0H520.853Z" fill="currentColor"/>
-                </svg>
-              </a>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer data-nav-theme="light" className="w-full bg-[#051C2C] text-[#F7F7F8]" style={{ minHeight: '520px' }}>
-        <div className="w-full h-full flex flex-col">
-
-          {/* Row 1: Heading + Logo | Nav Links */}
-          <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-0" style={{ borderBottom: '1px solid rgba(247,247,248,0.2)' }}>
-
-            {/* Left 6 grids: Heading + Logo */}
-            <div className="lg:col-span-6 flex items-start justify-between p-[30px] md:p-[60px]">
-              <h2 className="text-[28px] md:text-[36px] lg:text-[48px] font-semibold leading-[1.05] tracking-tight" style={{ maxWidth: '360px' }}>
-                Systematic conversion engineering for the premium wellness sector
-              </h2>
-              <img src="/srsvti-logo-icon.svg" alt="Srsvti" className="w-[36px] md:w-[48px] h-auto mt-[4px]" style={{ filter: 'brightness(0) invert(1)' }} />
-            </div>
-
-            {/* Right 6 grids: Nav Links */}
-            <div className="lg:col-span-6 flex flex-col gap-[16px] p-[30px] md:p-[60px]" style={{ borderLeft: '1px solid rgba(247,247,248,0.2)' }}>
-              <a href="#about" className="text-[18px] md:text-[24px] font-extrabold uppercase tracking-[0.02em] leading-none hover:opacity-80 transition-opacity">ABOUT US</a>
-              <a href="#reports" className="text-[18px] md:text-[24px] font-extrabold uppercase tracking-[0.02em] leading-none hover:opacity-80 transition-opacity">REPORTS</a>
-              <a href="#privacy" className="text-[18px] md:text-[24px] font-extrabold uppercase tracking-[0.02em] leading-none hover:opacity-80 transition-opacity">PRIVACY POLICY</a>
-              <a href="#terms" className="text-[18px] md:text-[24px] font-extrabold uppercase tracking-[0.02em] leading-none hover:opacity-80 transition-opacity">TERMS OF SERVICE</a>
-            </div>
-
-          </div>
-
-          {/* Row 2: CTA | Social Icons */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-0" style={{ borderBottom: '1px solid rgba(247,247,248,0.2)' }}>
-
-            {/* Left 6 grids: CTA */}
-            <div className="col-span-1 lg:col-span-6 flex items-center p-[20px] md:p-[20px_60px]">
-              <a href="#diagnosis" className="flex items-start gap-[0.2em] font-extrabold text-[16px] md:text-[20px] uppercase tracking-[0.02em] w-fit group hover:opacity-80 transition-opacity leading-none text-[#F7F7F8]">
-                <span className="border-b-[2px] border-current pb-[2px]">
-                  START YOUR REVENUE DIAGNOSIS
-                </span>
-                <svg className="w-[0.7em] h-[0.7em] mt-[0.1em] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" viewBox="0 0 561 561" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M520.853 0C542.945 0 560.853 17.9086 560.853 40V520.5C560.853 542.591 542.945 560.5 520.853 560.5H519.853C497.762 560.5 479.853 542.591 479.853 520.5V138.275L68.9911 549.138C53.3701 564.759 28.0436 564.759 12.4226 549.138L11.7157 548.431C-3.90525 532.81 -3.90524 507.483 11.7157 491.862L422.578 81H40.3533C18.2619 81 0.35334 63.0914 0.35334 41V40C0.35334 17.9086 18.2619 0 40.3533 0H520.853Z" fill="currentColor"/>
-                </svg>
-              </a>
-            </div>
-
-            {/* Right 6 grids: Social Icons */}
-            <div className="lg:col-span-6 grid grid-cols-4 gap-0" style={{ borderLeft: '1px solid rgba(247,247,248,0.2)' }}>
-              <a href="#linkedin" className="flex items-center justify-center hover:opacity-80 transition-opacity aspect-square" style={{ borderRight: '1px solid rgba(247,247,248,0.2)' }}>
-                <img src="/linkedin.svg" alt="LinkedIn" className="w-[24px] md:w-[32px] h-[24px] md:h-[32px]" style={{ filter: 'brightness(0) invert(1)' }} />
-              </a>
-              <a href="#behance" className="flex items-center justify-center hover:opacity-80 transition-opacity aspect-square" style={{ borderRight: '1px solid rgba(247,247,248,0.2)' }}>
-                <img src="/behance.svg" alt="Behance" className="w-[24px] md:w-[32px] h-[24px] md:h-[32px]" style={{ filter: 'brightness(0) invert(1)' }} />
-              </a>
-              <a href="#x" className="flex items-center justify-center hover:opacity-80 transition-opacity aspect-square" style={{ borderRight: '1px solid rgba(247,247,248,0.2)' }}>
-                <img src="/x.svg" alt="X" className="w-[24px] md:w-[32px] h-[24px] md:h-[32px]" style={{ filter: 'brightness(0) invert(1)' }} />
-              </a>
-              <a href="#instagram" className="flex items-center justify-center hover:opacity-80 transition-opacity aspect-square">
-                <img src="/instagram.svg" alt="Instagram" className="w-[24px] md:w-[32px] h-[24px] md:h-[32px]" style={{ filter: 'brightness(0) invert(1)' }} />
-              </a>
-            </div>
-
-          </div>
-
-          {/* Row 3: Copyright */}
-          <div className="p-[16px_30px] md:p-[24px_60px]">
-            <p className="text-[16px] md:text-[20px] font-medium leading-[1.4] tracking-tight opacity-60">
-              © 2026 Srsvti. All Rights Reserved
-            </p>
-          </div>
-
-        </div>
-      </footer>
-    </main>
-  );
+ </div>
+ </main>
+ );
 }

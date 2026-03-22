@@ -1,31 +1,34 @@
 import type { Metadata } from 'next';
-import { Rethink_Sans } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import './globals.css';
 
-const rethinkSans = Rethink_Sans({
-  subsets: ['latin'],
-  variable: '--font-rethink-sans',
+const poppins = Poppins({
+ subsets: ['latin'],
+ weight: ['400', '500', '600', '700'],
+ variable: '--font-poppins',
 });
 
 export const metadata: Metadata = {
-  title: 'SRSVTI | Revenue Diagnosis',
-  description: 'Digital infrastructure for high value prospects.',
+ title: 'SRSVTI | Revenue Diagnosis',
+ description: 'Digital infrastructure for high value prospects.',
 };
 
 import LenisProvider from '@/components/LenisProvider';
+import CustomCursor from '@/components/CustomCursor';
 
 export default function RootLayout({
-  children,
+ children,
 }: Readonly<{
-  children: React.ReactNode;
+ children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning className={`${rethinkSans.variable} font-sans antialiased bg-[#010206] text-[#F7F7F8]`}>
-        <LenisProvider>
-          {children}
-        </LenisProvider>
-      </body>
-    </html>
-  );
+ return (
+ <html lang="en" suppressHydrationWarning>
+ <body suppressHydrationWarning className={`${poppins.variable} font-sans antialiased bg-[#121212] text-white`}>
+ <CustomCursor />
+ <LenisProvider>
+ {children}
+ </LenisProvider>
+ </body>
+ </html>
+ );
 }
