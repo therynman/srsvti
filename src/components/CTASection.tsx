@@ -14,7 +14,7 @@ export default function CTASection() {
  <div className="px-[clamp(24px,4.16vw,60px)] pt-[clamp(80px,11.11vw,160px)] pb-[clamp(80px,8vw,120px)]">
  <div className="flex flex-col xl:grid xl:grid-cols-12 gap-[clamp(24px,3vw,12px)] items-start">
  {/* Heading: 7 grids */}
- <div className="w-full xl:col-span-6 pr-6">
+ <div className="w-full xl:col-span-6 xl:pr-6">
  <AnimatedHeading
  className="font-medium"
  style={{

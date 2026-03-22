@@ -71,7 +71,7 @@ export default function ROISection() {
  style={{ zIndex: 6, position: "relative" }}
  >
  {/* Centered heading */}
- <div className="px-[clamp(24px,4.16vw,60px)] pt-[clamp(80px,11.11vw,160px)] text-center">
+ <div className="px-[clamp(24px,4.16vw,60px)] pt-[clamp(80px,11.11vw,160px)] text-left xl:text-center">
  <AnimatedHeading
  className="font-medium"
  style={{
@@ -87,9 +87,9 @@ export default function ROISection() {
  </div>
 
  {/* Centered paragraph */}
- <div className="px-[clamp(24px,4.16vw,60px)] mt-[clamp(24px,2.77vw,40px)] text-center">
+ <div className="px-[clamp(24px,4.16vw,60px)] mt-[clamp(24px,2.77vw,40px)] text-left xl:text-center">
  <p
- className="font-medium text-white/80 max-w-[680px] mx-auto"
+ className="font-medium text-white/80 xl:mx-auto"
  style={{
  fontSize: "clamp(14px, 1.11vw, 64px)",
  letterSpacing: "0",

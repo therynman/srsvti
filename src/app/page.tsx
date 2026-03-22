@@ -202,9 +202,9 @@ export default function Home() {
  <FooterSection />
  </div>
 
- {/* Bottom Border & Gap */}
+ {/* Bottom Border & Gap — padding matches side margins for uniform look */}
  <div className="w-full border-t border-[#848484]"></div>
- <div className="h-[60px] w-full bg-[#121212]"></div>
+ <div style={{ height: "clamp(16px, 4.16vw, 60px)" }} className="w-full bg-[#121212]"></div>
 
  </div>
  </main>
