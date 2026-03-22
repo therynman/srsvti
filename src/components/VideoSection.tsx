@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import gsap from "gsap";
 import dynamic from "next/dynamic";
 
@@ -148,8 +149,8 @@ export default function VideoSection() {
  </div>
  </div>
 
- {/* Video Popup Modal */}
- {showPopup && (
+ {/* Video Popup Modal — portaled to body to escape z-index stacking */}
+ {showPopup && createPortal(
  <div
  className="fixed inset-0 z-[9998] bg-black/80 flex items-center justify-center backdrop-blur-sm"
  onClick={() => setShowPopup(false)}
@@ -174,7 +175,8 @@ export default function VideoSection() {
  className="w-full h-auto"
  />
  </div>
- </div>
+ </div>,
+ document.body
  )}
  </>
  );

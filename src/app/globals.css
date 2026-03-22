@@ -12,9 +12,11 @@ body {
   color: #FFFFFF;
 }
 
-/* Hide default cursor — custom JS cursor handles it */
-*, *::before, *::after {
+/* Hide default cursor — custom JS cursor handles it (desktop only) */
+@media (hover: hover) and (pointer: fine) {
+ *, *::before, *::after {
   cursor: none !important;
+ }
 }
 
 /* Slim custom scrollbar — targeting html for Lenis root mode */
