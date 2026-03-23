@@ -44,10 +44,16 @@ export default function Navbar({ onOpenDiagnosis }: NavbarProps) {
    transition={{ duration: 0.35, ease: "easeInOut" }}
    className="w-full flex justify-between items-center px-[clamp(24px,4.16vw,60px)] py-[clamp(16px,1.66vw,24px)] border-b border-[#848484] fixed top-0 left-0 bg-[#121212] z-50"
   >
-   {/* Logo with button-like background */}
+   {/* Logo with button-like background matching button heights perfectly */}
    <div className="flex items-center">
-    <div className="bg-[#222222] p-2.5 rounded-[12px] flex items-center justify-center border border-white/5">
-     <img src="/Srsvti Icon.svg" alt="Srsvti Logo" className="h-[24px] w-auto relative" />
+    <div 
+     className="bg-[#252525] border border-white/5 rounded-[12px] flex items-center justify-center shrink-0"
+     style={{ 
+      height: "clamp(48px,3.88vw,72px)", 
+      width: "clamp(48px,3.88vw,72px)" 
+     }}
+    >
+     <img src="/Srsvti Icon.svg" alt="Srsvti Logo" className="h-[50%] w-auto relative" />
     </div>
    </div>
 
@@ -55,10 +61,10 @@ export default function Navbar({ onOpenDiagnosis }: NavbarProps) {
    <div className="flex items-center gap-[clamp(16px,3.33vw,48px)]">
     {/* Desktop nav buttons — visible at xl+ */}
     <div className="hidden xl:flex items-center gap-[16px]">
-     <button className="flex items-center justify-center px-[clamp(24px,2vw,32px)] rounded-[12px] bg-[#222222] text-white hover:bg-[#333333] transition-colors border border-white/5 font-medium" style={{ height: "clamp(48px,3.88vw,72px)", fontSize: "clamp(14px, 1.11vw, 80px)" }}>
+     <button className="flex items-center justify-center px-[clamp(24px,2vw,32px)] rounded-[12px] bg-[#252525] text-white hover:bg-[#333333] transition-colors border border-white/5 font-medium" style={{ height: "clamp(48px,3.88vw,72px)", fontSize: "clamp(14px, 1.11vw, 80px)" }}>
       Methodology
      </button>
-     <button className="flex items-center justify-center px-[clamp(24px,2vw,32px)] rounded-[12px] bg-[#222222] text-white hover:bg-[#333333] transition-colors border border-white/5 font-medium" style={{ height: "clamp(48px,3.88vw,72px)", fontSize: "clamp(14px, 1.11vw, 80px)" }}>
+     <button className="flex items-center justify-center px-[clamp(24px,2vw,32px)] rounded-[12px] bg-[#252525] text-white hover:bg-[#333333] transition-colors border border-white/5 font-medium" style={{ height: "clamp(48px,3.88vw,72px)", fontSize: "clamp(14px, 1.11vw, 80px)" }}>
       Engineered Trust
      </button>
     </div>
@@ -76,7 +82,7 @@ export default function Navbar({ onOpenDiagnosis }: NavbarProps) {
       style={{
        height: "clamp(48px,3.88vw,72px)",
        width: "clamp(48px,3.88vw,72px)",
-       backgroundColor: menuOpen ? "#0077FF" : "#222222",
+       backgroundColor: menuOpen ? "#0077FF" : "#252525",
       }}
      >
       {menuOpen ? (

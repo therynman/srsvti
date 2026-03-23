@@ -188,7 +188,7 @@ export default function DiagnosisForm({ onClose }: DiagnosisFormProps) {
                     <button
                       key={label}
                       id={`step-nav-${idx}`}
-                      className="flex items-center gap-[12px] px-[clamp(24px,2vw,32px)] rounded-[12px] bg-[#222222] text-white font-medium border transition-all shrink-0"
+                      className="flex items-center gap-[12px] px-[clamp(24px,2vw,32px)] rounded-[12px] bg-[#252525] text-white font-medium border transition-all shrink-0"
                       style={{
                         height: "clamp(48px, 3.88vw, 72px)",
                         fontSize: "clamp(14px, 1.11vw, 16px)",
@@ -273,11 +273,7 @@ export default function DiagnosisForm({ onClose }: DiagnosisFormProps) {
                             key={qKey}
                             className="rounded-[12px] border transition-all duration-300"
                             style={{
-                              backgroundColor: isDone
-                                ? "rgba(255,255,255,0.06)"
-                                : isActive
-                                ? "rgba(255,255,255,0.06)"
-                                : "rgba(255,255,255,0.03)",
+                              backgroundColor: "#252525",
                               borderColor: isActive
                                 ? "rgba(255,255,255,0.15)"
                                 : "rgba(255,255,255,0.08)",
@@ -359,7 +355,7 @@ export default function DiagnosisForm({ onClose }: DiagnosisFormProps) {
                 >
                   <button
                     onClick={handleBack}
-                    className="inline-flex justify-center items-center gap-[clamp(8px,1vw,16px)] w-[clamp(48px,3.88vw,72px)] sm:w-auto px-0 sm:px-[clamp(24px,2vw,32px)] rounded-[12px] bg-[#222222] text-white font-medium hover:bg-[#333333] transition-colors border border-white/5 pointer-events-auto shrink-0"
+                    className="inline-flex justify-center items-center gap-[clamp(8px,1vw,16px)] w-[clamp(48px,3.88vw,72px)] sm:w-auto px-0 sm:px-[clamp(24px,2vw,32px)] rounded-[12px] bg-[#252525] text-white font-medium hover:bg-[#333333] transition-colors border border-white/5 pointer-events-auto shrink-0"
                     style={{
                       height: "clamp(48px, 3.88vw, 72px)",
                       fontSize: "clamp(14px, 1.11vw, 20px)",
@@ -417,7 +413,7 @@ export default function DiagnosisForm({ onClose }: DiagnosisFormProps) {
             className="absolute inset-0 flex items-center justify-center p-[clamp(16px,4.16vw,60px)]"
           >
             <div 
-              className="bg-[#222222] rounded-[24px] flex flex-col items-center justify-center text-center shadow-2xl relative z-10 w-fit"
+              className="bg-[#252525] rounded-[24px] flex flex-col items-center justify-center text-center shadow-2xl relative z-10 w-fit"
               style={{ 
                 maxWidth: "clamp(500px, 60vw, 850px)",
                 padding: "clamp(24px, 2.22vw, 32px)",
