@@ -49,3 +49,11 @@ html, body, .lenis {
   background-image: radial-gradient(rgba(132, 132, 132, 0.2) 2px, transparent 2px);
   background-size: 24px 24px;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

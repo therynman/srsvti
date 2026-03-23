@@ -7,10 +7,12 @@ import CTASection from "../components/CTASection";
 import ROISection from "../components/ROISection";
 import CriteriaSection from "../components/CriteriaSection";
 import FooterSection from "../components/FooterSection";
+import DiagnosisForm from "../components/DiagnosisForm";
 import dynamic from "next/dynamic";
 
 const AnimatedHeading = dynamic(() => import("../components/AnimatedHeading"), { ssr: false });
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -27,6 +29,7 @@ export default function Home() {
  const section6Ref = useRef<HTMLDivElement>(null);
  const section7Ref = useRef<HTMLDivElement>(null);
  const section8Ref = useRef<HTMLDivElement>(null);
+ const [showDiagnosis, setShowDiagnosis] = useState(false);
 
  useEffect(() => {
  // Small delay to ensure DOM is ready and Lenis is initialized
@@ -46,7 +49,7 @@ export default function Home() {
  <main className="min-h-screen bg-[#121212] flex flex-col text-white font-sans w-full">
  
  {/* Navbar with auto-hide behavior */}
- <Navbar />
+ <Navbar onOpenDiagnosis={() => setShowDiagnosis(true)} />
 
  {/* Spacer for fixed navbar */}
  <div className="h-[97px] w-full shrink-0" />
@@ -184,7 +187,7 @@ export default function Home() {
 
  {/* SECTION 5: CTA */}
  <div ref={section5Ref} className="relative" style={{ zIndex: 5 }}>
- <CTASection />
+ <CTASection onOpenDiagnosis={() => setShowDiagnosis(true)} />
  </div>
 
  {/* SECTION 6: ROI Guarantee */}
@@ -207,6 +210,13 @@ export default function Home() {
  <div style={{ height: "clamp(16px, 4.16vw, 60px)" }} className="w-full bg-[#121212]"></div>
 
  </div>
+
+ {/* Diagnosis Form Overlay */}
+ <AnimatePresence>
+  {showDiagnosis && (
+   <DiagnosisForm onClose={() => setShowDiagnosis(false)} />
+  )}
+ </AnimatePresence>
  </main>
  );
 }

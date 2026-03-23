@@ -3,7 +3,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 
-export default function Navbar() {
+interface NavbarProps {
+  onOpenDiagnosis?: () => void;
+}
+
+export default function Navbar({ onOpenDiagnosis }: NavbarProps) {
  const { scrollY } = useScroll();
  const [hidden, setHidden] = useState(false);
  const [menuOpen, setMenuOpen] = useState(false);
@@ -60,7 +64,7 @@ export default function Navbar() {
     </div>
 
     {/* CTA — hidden on very small screens (below md), visible from md to xl and on xl+ */}
-    <button className="hidden md:inline-flex justify-center items-center gap-[clamp(8px,1vw,16px)] px-[clamp(24px,2vw,32px)] rounded-[12px] bg-[#0077FF] text-white font-medium hover:bg-[#0077FF]/90 transition-colors w-fit" style={{ height: "clamp(48px,3.88vw,72px)", fontSize: "clamp(14px,1.11vw,20px)" }}>
+    <button onClick={onOpenDiagnosis} className="hidden md:inline-flex justify-center items-center gap-[clamp(8px,1vw,16px)] px-[clamp(24px,2vw,32px)] rounded-[12px] bg-[#0077FF] text-white font-medium hover:bg-[#0077FF]/90 transition-colors w-fit" style={{ height: "clamp(48px,3.88vw,72px)", fontSize: "clamp(14px,1.11vw,20px)" }}>
      Initiate Revenue Diagnosis <img src="/CTA Arrow.svg" alt="arrow" className="w-[clamp(12px,0.9vw,20px)] h-[clamp(12px,0.9vw,20px)]" />
     </button>
 
@@ -112,14 +116,14 @@ export default function Navbar() {
          </a>
 
          {/* CTA inside dropdown — only visible on very small screens (below md) */}
-         <a
-          href="#"
+         <button
+          onClick={onOpenDiagnosis}
           className="md:hidden inline-flex justify-center items-center gap-2 px-5 mt-3 rounded-[12px] bg-[#0077FF] text-white font-medium hover:bg-[#0077FF]/90 transition-colors whitespace-nowrap"
           style={{ height: "44px", fontSize: "clamp(14px, 1.11vw, 64px)" }}
          >
           Initiate Revenue Diagnosis
           <img src="/CTA Arrow.svg" alt="arrow" className="w-[12px] h-[12px]" />
-         </a>
+         </button>
         </div>
        </motion.div>
       )}
