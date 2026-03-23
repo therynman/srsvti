@@ -28,11 +28,11 @@ export default function CriteriaSection() {
  <div className="flex flex-col xl:grid xl:grid-cols-2 border-t border-[#848484]">
  
  {/* Left: Visual with dotted background */}
- <div className="border-b xl:border-b-0 xl:border-r border-[#848484] bg-dotted-pattern flex items-center justify-center p-[clamp(24px,4.16vw,60px)] min-h-[320px] xl:min-h-[640px]">
+ <div className="border-b xl:border-b-0 xl:border-r border-[#848484] bg-dotted-pattern flex items-center justify-center p-[clamp(24px,4.16vw,60px)] xl:min-h-[640px]">
  <img
  src="/Criteria vs Exclusions.svg"
  alt="Criteria vs Exclusions"
- className="w-full h-full object-contain"
+ className="w-full h-auto max-h-[300px] xl:max-h-none object-contain"
  />
  </div>
 

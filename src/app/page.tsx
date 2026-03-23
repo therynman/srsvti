@@ -121,8 +121,8 @@ export default function Home() {
  {/* Grid */}
  <div className="w-full flex flex-col xl:grid xl:grid-cols-2 border-t border-[#848484]">
  {/* Left Graphic */}
- <div className="border-b xl:border-b-0 xl:border-r border-[#848484] bg-dotted-pattern flex items-center justify-center p-[clamp(24px,4.16vw,60px)] min-h-[400px] xl:min-h-[800px]">
- <img src="/Delusion vs Reality Graphics.svg" alt="Delusion vs Reality" className="w-full h-auto xl:w-[80%] max-w-[80vw] xl:max-w-[700px] object-contain" />
+ <div className="border-b xl:border-b-0 xl:border-r border-[#848484] bg-dotted-pattern flex items-center justify-center p-[clamp(24px,4.16vw,60px)] xl:min-h-[800px]">
+ <img src="/Delusion vs Reality Graphics.svg" alt="Delusion vs Reality" className="w-full h-auto max-h-[300px] xl:max-h-none xl:w-[80%] max-w-[80vw] xl:max-w-[700px] object-contain" />
  </div>
 
  {/* Right Cards */}
