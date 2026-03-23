@@ -67,6 +67,7 @@ export default function DiagnosisForm({ onClose }: DiagnosisFormProps) {
   const [completedQuestions, setCompletedQuestions] = useState<Set<string>>(new Set());
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const navRef = React.useRef<HTMLDivElement>(null);
 
@@ -92,7 +93,7 @@ export default function DiagnosisForm({ onClose }: DiagnosisFormProps) {
     setAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleNext = useCallback(() => {
+  const handleNext = useCallback(async () => {
     const step = STEPS[currentStep];
     const key = getQuestionKey(currentStep, currentQuestion);
     const currentAnswer = answers[key]?.trim();
@@ -100,28 +101,42 @@ export default function DiagnosisForm({ onClose }: DiagnosisFormProps) {
     // Do not proceed on empty input
     if (!currentAnswer) return;
 
-    if (currentAnswer) {
-      setCompletedQuestions((prev) => {
-        const next = new Set(prev);
-        next.add(key);
-        return next;
-      });
-    }
+    setCompletedQuestions((prev) => new Set(prev).add(key));
 
     if (currentQuestion < step.questions.length - 1) {
-      setCurrentQuestion((q) => q + 1);
+      setCurrentQuestion((prev) => prev + 1);
+    } else if (currentStep < STEPS.length - 1) {
+      setCompletedSteps((prev) => new Set(prev).add(currentStep));
+      setCurrentStep((prev) => prev + 1);
+      setCurrentQuestion(0);
     } else {
-      setCompletedSteps((prev) => {
-        const next = new Set(prev);
-        next.add(currentStep);
-        return next;
-      });
+      // Last step: Attempt submission
+      setIsSubmitting(true);
+      
+      const payload = {
+        name: answers["0-0"] || "Unknown",
+        company_name: answers["0-1"] || "Unknown",
+        company_email: answers["0-2"] || "Unknown",
+        responses: { ...answers },
+      };
 
-      if (currentStep < STEPS.length - 1) {
-        setCurrentStep((s) => s + 1);
-        setCurrentQuestion(0);
-      } else {
+      try {
+        const res = await fetch('/api/diagnoses', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to submit form');
+        }
+
+        setIsSubmitting(false);
         setIsSubmitted(true);
+      } catch (err) {
+        console.error("Submission error:", err);
+        setIsSubmitting(false);
+        alert("There was an issue submitting your diagnosis. Please try again.");
       }
     }
   }, [currentStep, currentQuestion, answers]);
@@ -360,7 +375,7 @@ export default function DiagnosisForm({ onClose }: DiagnosisFormProps) {
 
                   <button
                     onClick={handleNext}
-                    disabled={!answers[getQuestionKey(currentStep, currentQuestion)]?.trim()}
+                    disabled={!answers[getQuestionKey(currentStep, currentQuestion)]?.trim() || isSubmitting}
                     className="inline-flex justify-center items-center gap-[clamp(8px,1vw,16px)] px-[clamp(24px,2vw,32px)] rounded-[12px] bg-[#0077FF] text-white font-medium hover:bg-[#0077FF]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed pointer-events-auto"
                     style={{
                       height: "clamp(48px, 3.88vw, 72px)",
@@ -368,10 +383,14 @@ export default function DiagnosisForm({ onClose }: DiagnosisFormProps) {
                     }}
                   >
                     {currentStep === STEPS.length - 1 ? (
-                      <>
-                        <span className="hidden sm:inline">Confirm your submission</span>
-                        <span className="sm:hidden">Submit</span>
-                      </>
+                      isSubmitting ? (
+                        <span>Validating...</span>
+                      ) : (
+                        <>
+                          <span className="hidden sm:inline">Confirm your submission</span>
+                          <span className="sm:hidden">Submit</span>
+                        </>
+                      )
                     ) : (
                       <>
                         Next
